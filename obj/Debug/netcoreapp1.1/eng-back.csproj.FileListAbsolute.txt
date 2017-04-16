@@ -1,0 +1,8 @@
+/home/gaozijian/桌面/eng-back/bin/Debug/netcoreapp1.1/eng-back.deps.json
+/home/gaozijian/桌面/eng-back/bin/Debug/netcoreapp1.1/eng-back.runtimeconfig.json
+/home/gaozijian/桌面/eng-back/bin/Debug/netcoreapp1.1/eng-back.runtimeconfig.dev.json
+/home/gaozijian/桌面/eng-back/bin/Debug/netcoreapp1.1/eng-back.dll
+/home/gaozijian/桌面/eng-back/bin/Debug/netcoreapp1.1/eng-back.pdb
+/home/gaozijian/桌面/eng-back/obj/Debug/netcoreapp1.1/eng-back.AssemblyInfo.cs
+/home/gaozijian/桌面/eng-back/obj/Debug/netcoreapp1.1/eng-back.dll
+/home/gaozijian/桌面/eng-back/obj/Debug/netcoreapp1.1/eng-back.pdb

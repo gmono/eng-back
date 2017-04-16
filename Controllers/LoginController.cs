@@ -6,13 +6,24 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eng_back.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class LoginController : Controller
     {
-        // POST api/values
+        // POST api/login
         [HttpPost]
         public void Post([FromBody]string value)
         {
+
+        }
+        [HttpGet]
+        public string GetA()
+        {
+            return "hello world";
+        }
+        [HttpGet()]
+        public string GetB()
+        {
+            return "bbb";
         }
     }
 }
