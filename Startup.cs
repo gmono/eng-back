@@ -36,7 +36,7 @@ namespace eng_back
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            app.UseCors("www.gmono.xyz:8050");
+            app.UseCors("*");
             app.Use(async (context,next)=>{
                 var path=context.Request.Path;
                 if(path=="/api/User/Login"||path=="/api/User/Regist")
