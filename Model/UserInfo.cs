@@ -7,19 +7,9 @@ namespace eng_back.Model
         public ObjectId Id{get;set;}
         public string UserName{get;set;}
         public string PassWord{get;set;}
-    }
-    public class UserInfo
-    {
-        public ObjectId Id{get;set;}
-        public string NickName{get;set;}
-        public DateTime BirthDay{get;set;}
-        public string Label{get;set;}
-        public ObjectId UserId{get;set;}
-    }
-    public class UserAssets
-    {
-        public ObjectId Id{get;set;}
-        public ObjectId UserId{get;set;}
+        public string NickName{get;set;}//昵称
+        public DateTime BirthDay{get;set;}//生日
+        public string Label{get;set;}//签名
         public int ResAssets{get;set;} //用户资源分
     }
 }

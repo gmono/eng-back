@@ -1,7 +1,7 @@
 {
   "runtimeOptions": {
     "additionalProbingPaths": [
-      "/home/gaozijian/.nuget/packages"
+      "C:\\Users\\gaozijian\\.nuget\\packages"
     ]
   }
 }
