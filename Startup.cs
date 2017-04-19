@@ -36,16 +36,17 @@ namespace eng_back
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
             app.UseCors("*");
-            app.Use(async (context,next)=>{
-                var path=context.Request.Path;
-                if(path.Value=="/api/User/Login"||path.Value=="/api/User/Regist")
+            app.Use(async (context, next) =>
+            {
+                var path = context.Request.Path.Value;
+                if (path == "/api/User/Login" || path == "/api/User/Regist")
                 {
                     await next.Invoke();
                 }
-                else 
+                else
                 {
-                    string sign=context.Request.Cookies[Controllers.UserController.signname];
-                    if(sign!=null&&Controllers.UserController.IsLogined(sign))
+                    string sign = context.Request.Cookies[Controllers.UserController.signname];
+                    if (sign != null && Controllers.UserController.IsLogined(sign))
                     {
                         await next.Invoke();
                     }
