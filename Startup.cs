@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-
 namespace eng_back
 {
     public class Startup
@@ -39,20 +38,19 @@ namespace eng_back
             app.UseCors("*");
             app.Use(async (context,next)=>{
                 var path=context.Request.Path;
-                if(path=="/api/User/Login"||path=="/api/User/Regist")
+                if(path.Value=="/api/User/Login"||path.Value=="/api/User/Regist")
                 {
                     await next.Invoke();
                 }
                 else 
                 {
-                    string sign=context.Request.Cookies["Login-Sign"];
-                    if(Controllers.UserController.IsLogined(sign))
+                    string sign=context.Request.Cookies[Controllers.UserController.signname];
+                    if(sign!=null&&Controllers.UserController.IsLogined(sign))
                     {
                         await next.Invoke();
                     }
                     else return;
                 }
-                await next.Invoke();
             });
             app.UseMvc();
         }
