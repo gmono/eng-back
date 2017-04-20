@@ -11,7 +11,7 @@ namespace eng_back.Controllers
     [Route("api/[controller]/[action]")]
     public class UserController : Controller
     {
-        public static readonly string dbpath=@"Data/Users.db";
+        public static readonly string dbpath=@"Data/User.db";
         public static readonly string ucolname="users";
         public static readonly string signname="Login-Sign";
         //从guid->username的查找表 用于验证登录
@@ -78,20 +78,8 @@ namespace eng_back.Controllers
         [HttpGet]
         public object GetUserInfo()
         {
-            string guid=HttpContext.Request.Cookies[signname];
-            if(IsLogined(guid))
-            {
-                string username=GuidToUserName(guid);
-                using(var db=new LiteDatabase(dbpath))
-                {
-                    var col=db.GetCollection<User>(ucolname);
-                    col.EnsureIndex(x=>x.UserName);
-                    var res=col.FindOne(x=>x.UserName==username);
-                    if(res==null) throw new Exception("错误，登录信息与数据库不同步！");
-                    return GetInfo(res);
-                }
-            }
-            return null;
+            User info=GetLoginedUser();
+            return GetInfo(info);
         }
         /// <summary>
         /// 修改一般信息
@@ -103,17 +91,15 @@ namespace eng_back.Controllers
         [HttpPut]
         public bool UpdateUserInfo([FromForm]string nickname,[FromForm]string label,[FromForm]DateTime birthday)
         {
-            string guid = GetLoginGuid();
-            string username = GuidToUserName(guid);
+            
             if (nickname.Length < 1) return false;//必须有昵称
+            User info=GetLoginedUser();
+            info.NickName = nickname;
+            info.Label = label;
+            info.BirthDay = birthday;
             using (var db = new LiteDatabase(dbpath))
             {
                 var col = db.GetCollection<User>(ucolname);
-                User info = col.FindOne(x => x.UserName == username);
-                if (info == null) throw new Exception("错误，登录信息与数据库不同步！");//调试用
-                info.NickName = nickname;
-                info.Label = label;
-                info.BirthDay = birthday;
                 col.Update(info);
                 return true;
             }
@@ -126,22 +112,46 @@ namespace eng_back.Controllers
         /// <returns>是否成功</returns>
         public bool UpdatePassword([FromForm]string nowpas,[FromForm]string newpas)
         {
-            string guid = GetLoginGuid();
-            string username = GuidToUserName(guid);
+            User info=GetLoginedUser();
+            if (info.PassWord != nowpas) return false;
+            info.PassWord = newpas;
             using (var db = new LiteDatabase(dbpath))
             {
                 var col = db.GetCollection<User>(ucolname);
-                User info = col.FindOne(x => x.UserName == username);
-                if (info.PassWord != nowpas) return false;
-                info.PassWord = newpas;
                 col.Update(info);
                 return true;
             }
+        }
+        //以下为辅助函数部分
+        /// <summary>
+        /// 取得当前登录的用户信息 
+        /// </summary>
+        /// <returns>当前登录的用户信息结构 没有登录则返回null</returns>
+        public User GetLoginedUser()
+        {
+            string username=GetLoginedUserName();
+            using(var db=new LiteDatabase(dbpath))
+            {
+                var col=db.GetCollection<User>(ucolname);
+                User info=col.FindOne(x=>x.UserName==username);
+                return info;
+            }
+        }
+        /// <summary>
+        /// 取得当前登录的用户的用户名
+        /// </summary>
+        /// <returns></returns>
+        public string GetLoginedUserName()
+        {
+            string guid=GetLoginGuid();
+            if(guid==null) return null;
+            return GuidToUserName(guid);
         }
         public string GetLoginGuid()
         {
             return Request.Cookies[signname];
         }
+        //以下为工具函数部分
         public static object GetInfo(User uinfo)
         {
                     var ret=new {
