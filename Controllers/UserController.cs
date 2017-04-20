@@ -110,6 +110,7 @@ namespace eng_back.Controllers
         /// <param name="nowpas">原密码</param>
         /// <param name="newpas">新密码</param>
         /// <returns>是否成功</returns>
+        [HttpPut]
         public bool UpdatePassword([FromForm]string nowpas,[FromForm]string newpas)
         {
             User info=GetLoginedUser();
@@ -121,6 +122,15 @@ namespace eng_back.Controllers
                 col.Update(info);
                 return true;
             }
+        }
+        /// <summary>
+        /// 外部接口 测试是否已经登录
+        /// </summary>
+        /// <returns>是否已经登录</returns>
+        [HttpGet]
+        public bool HasLogin()
+        {
+            return IsLogined(GetLoginGuid());
         }
         //以下为辅助函数部分
         /// <summary>
